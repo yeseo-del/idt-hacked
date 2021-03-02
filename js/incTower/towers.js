@@ -209,10 +209,10 @@ define(['incTower/core', 'lib/knockout', 'lib/break_infinity', 'lib/phaser', 'in
                 return 'These rounds explode once they penetrate causing intense internal bleeding. They deal less kinetic damage upfront but always cause a bleed for a significant portion of the damage.';
             },
             icon: 'blood-icon.png',
-            damageModifier: 0.5, //Does 50% of normal kinetic damage.
+            damageModifier: 1, //Does 100% of normal kinetic damage.
             collision: function (tower, bullet, enemy) {
                 var damageAssigned = enemy.assignDamage(bullet.damage, 'kinetic');
-                incrementObservable(enemy.statusEffects.bleeding, damageAssigned.times(0.5));
+                incrementObservable(enemy.statusEffects.bleeding, damageAssigned.times(1));
             }
         },
         sniper: {
@@ -220,9 +220,9 @@ define(['incTower/core', 'lib/knockout', 'lib/break_infinity', 'lib/phaser', 'in
             describe: function () {
                 return 'These long range bullets deal greater at large range but take longer to reload.';
             },
-            damageModifier: 1.5, //Does 150% of normal kinetic damage.
-            rangeModifier: 1.5,
-            reloadModifier: 2,
+            damageModifier: 2, //Does 200% of normal kinetic damage.
+            rangeModifier: 2,
+            reloadModifier: 0,
             collision: function (tower, bullet, enemy) {
                 var damageAssigned = enemy.assignDamage(bullet.damage, 'kinetic');
             }
@@ -237,7 +237,7 @@ define(['incTower/core', 'lib/knockout', 'lib/break_infinity', 'lib/phaser', 'in
             collision: function (tower, bullet, enemy) {
                 enemy.assignDamage(bullet.damage, 'arcane');
                 if (incTower.mana().lt(incTower.maxMana())) {
-                    incrementObservable(incTower.mana, 1);
+                    incrementObservable(incTower.mana, 1000);
                 }
             }
         },
@@ -253,11 +253,11 @@ define(['incTower/core', 'lib/knockout', 'lib/break_infinity', 'lib/phaser', 'in
             icon: 'air-element.png',
             collision: function (tower, bullet, enemy) {
                 enemy.assignDamage(bullet.damage, 'air');
-                var chance = 0.10; //10% base chance of applying a rune
-                chance += (0.05 * incTower.getEffectiveSkillLevel('airRuneApplication')); //increases by 5% per rank in the relevant skill
+                var chance = 1; //10% base chance of applying a rune
+                chance += (1 * incTower.getEffectiveSkillLevel('airRuneApplication')); //increases by 5% per rank in the relevant skill
                 var runesAdded = enemy.addElementalRunesDiminishing('air', chance);
                 if (runesAdded > 0) {
-                    enemy.addElementalRunesDiminishing('air',0.05 * incTower.getEffectiveSkillLevel('airAdvancedRuneApplication'));
+                    enemy.addElementalRunesDiminishing('air',1 * incTower.getEffectiveSkillLevel('airAdvancedRuneApplication'));
                 }
 
             }
@@ -271,11 +271,11 @@ define(['incTower/core', 'lib/knockout', 'lib/break_infinity', 'lib/phaser', 'in
             icon: 'earth-element.png',
             collision: function (tower, bullet, enemy) {
                 enemy.assignDamage(bullet.damage, 'earth');
-                var chance = 0.10; //10% base chance of applying a rune
-                chance += (0.05 * incTower.getEffectiveSkillLevel('earthRuneApplication')); //increases by 5% per rank in the relevant skill
+                var chance = 1; //10% base chance of applying a rune
+                chance += (1 * incTower.getEffectiveSkillLevel('earthRuneApplication')); //increases by 5% per rank in the relevant skill
                 var runesAdded = enemy.addElementalRunesDiminishing('earth', chance);
                 if (runesAdded > 0) {
-                    enemy.addElementalRunesDiminishing('earth',0.05 * incTower.getEffectiveSkillLevel('earthAdvancedRuneApplication'));
+                    enemy.addElementalRunesDiminishing('earth',1 * incTower.getEffectiveSkillLevel('earthAdvancedRuneApplication'));
                 }
             }
 
@@ -288,11 +288,11 @@ define(['incTower/core', 'lib/knockout', 'lib/break_infinity', 'lib/phaser', 'in
             icon: 'fire-element.png',
             collision: function (tower, bullet, enemy) {
                 enemy.assignDamage(bullet.damage, 'fire');
-                var chance = 0.10; //10% base chance of applying a rune
-                chance += (0.05 * incTower.getEffectiveSkillLevel('fireRuneApplication')); //increases by 5% per rank in the relevant skill
+                var chance = 1; //10% base chance of applying a rune
+                chance += (1 * incTower.getEffectiveSkillLevel('fireRuneApplication')); //increases by 5% per rank in the relevant skill
                 var runesAdded = enemy.addElementalRunesDiminishing('fire', chance);
                 if (runesAdded > 0) {
-                    enemy.addElementalRunesDiminishing('fire',0.05 * incTower.getEffectiveSkillLevel('fireAdvancedRuneApplication'));
+                    enemy.addElementalRunesDiminishing('fire',1 * incTower.getEffectiveSkillLevel('fireAdvancedRuneApplication'));
                 }
             }
         },
@@ -304,11 +304,11 @@ define(['incTower/core', 'lib/knockout', 'lib/break_infinity', 'lib/phaser', 'in
             icon: 'water-element.png',
             collision: function (tower, bullet, enemy) {
                 enemy.assignDamage(bullet.damage, 'water');
-                var chance = 0.10; //10% base chance of applying a rune
-                chance += (0.05 * incTower.getEffectiveSkillLevel('waterRuneApplication')); //increases by 5% per rank in the relevant skill
+                var chance = 1; //10% base chance of applying a rune
+                chance += (1 * incTower.getEffectiveSkillLevel('waterRuneApplication')); //increases by 5% per rank in the relevant skill
                 var runesAdded = enemy.addElementalRunesDiminishing('water', chance);
                 if (runesAdded > 0) {
-                    enemy.addElementalRunesDiminishing('water',0.05 * incTower.getEffectiveSkillLevel('waterAdvancedRuneApplication'));
+                    enemy.addElementalRunesDiminishing('water',1 * incTower.getEffectiveSkillLevel('waterAdvancedRuneApplication'));
                 }
             }
         },
@@ -455,7 +455,7 @@ define(['incTower/core', 'lib/knockout', 'lib/break_infinity', 'lib/phaser', 'in
         generator: {
             name: 'Generator',
             describe: function (tower) {
-                var rate = incTower.humanizeNumber(tower.fireTime() / 1000);
+                var rate = incTower.humanizeNumber(tower.fireTime() / 1);
                 var damage = incTower.humanizeNumber(tower.totalDamage());
                 var duration = incTower.supportTowerDuration();
                 return 'Every ' + rate + "s this tower will grant back-up power, allowing a tower to fire through disabling effects such as Null-Zone, and granting a " + damage + " damage buff to a non-support tower that is adjacent to it. The buff lasts " + (duration / 1000).toFixed(2) + " seconds. This tower is immune to tower disabling effects such as Null-Zone.";
@@ -478,7 +478,7 @@ define(['incTower/core', 'lib/knockout', 'lib/break_infinity', 'lib/phaser', 'in
         sensor: {
             name: 'Sensor Array',
             describe: function (tower) {
-                var rate = incTower.humanizeNumber(tower.fireTime() / 1000);
+                var rate = incTower.humanizeNumber(tower.fireTime() / 1);
                 var damage = incTower.humanizeNumber(tower.totalDamage());
                 var duration = incTower.supportTowerDuration();
                 return 'Every ' + rate + "s this tower will grant a 15% range buff and a " + damage + " damage buff to a non-support tower that is adjacent to it. The buff lasts " + (duration / 1000).toFixed(2) + " seconds.";
@@ -517,10 +517,10 @@ define(['incTower/core', 'lib/knockout', 'lib/break_infinity', 'lib/phaser', 'in
     incTower.towerAttributes = {
         kinetic: {
             name: 'Kinetic',
-            baseCost: 25,
-            startingFireRate: 1500,
-            startingRange: 120,
-            damagePerLevel: 1,
+            baseCost: 0,
+            startingFireRate: 1,
+            startingRange: 100000,
+            damagePerLevel: 100,
             describe: function () {
                 return 'Kinetic towers are cheap to build and reliable. Their simpler parts make them cheaper to upgrade as well.';
             },
@@ -528,10 +528,10 @@ define(['incTower/core', 'lib/knockout', 'lib/break_infinity', 'lib/phaser', 'in
         },
         elemental: {
             name: 'Elemental',
-            baseCost: 50,
-            damagePerLevel: 1,
-            startingRange: 100,
-            startingFireRate: 2500,
+            baseCost: 0,
+            damagePerLevel: 100,
+            startingRange: 100000,
+            startingFireRate: 1,
             describe: function () {
                 return 'Elemental towers deal damage and also unlock mystical elemental effects, depending on the ammo chosen.';
             },
@@ -539,10 +539,10 @@ define(['incTower/core', 'lib/knockout', 'lib/break_infinity', 'lib/phaser', 'in
         },
         support: {
             name: 'Support',
-            baseCost: 66,
-            damagePerLevel: 1,
-            startingRange: 32,
-            startingFireRate: 10000,
+            baseCost: 0,
+            damagePerLevel: 100,
+            startingRange: 100000,
+            startingFireRate: 1,
             describe: function () {
                 return 'Support towers grant effects to the towers around them, and usually a damage boost based on the damage of the support tower.';
             },
@@ -559,8 +559,8 @@ define(['incTower/core', 'lib/knockout', 'lib/break_infinity', 'lib/phaser', 'in
     });
     incTower.towerCost = function (type) {
         var base = new Decimal(incTower.towerAttributes[type].baseCost);
-        base = base.plus(incTower.towerAttributes[type].blueprintPoints().times(5));
-        var amount = incTower.costCalc(base, incTower.numTowers(), 1.4);
+        base = base.plus(incTower.towerAttributes[type].blueprintPoints().times(1));
+        var amount = incTower.costCalc(base, incTower.numTowers(), 1);
         amount = amount.times(1 - (incTower.getEffectiveSkillLevel('construction') * 0.01));
         return amount;
     };
@@ -629,9 +629,9 @@ define(['incTower/core', 'lib/knockout', 'lib/break_infinity', 'lib/phaser', 'in
     }
 
     function calculateTowerUpgradeCost(towerType, level) {
-        var amount = incTower.costCalc(incTower.towerAttributes[towerType].baseCost, level, 1.2);
-        amount = amount.times(1 - (incTower.getEffectiveSkillLevel('construction') * 0.01));
-        amount = amount.times(1 - (incTower.getEffectiveSkillLevel('modularConstruction') * 0.05));
+        var amount = incTower.costCalc(incTower.towerAttributes[towerType].baseCost, level, 1);
+        amount = amount.times(1 - (incTower.getEffectiveSkillLevel('construction') * 1));
+        amount = amount.times(1 - (incTower.getEffectiveSkillLevel('modularConstruction') * 1));
         return amount;
     }
 
@@ -771,7 +771,7 @@ define(['incTower/core', 'lib/knockout', 'lib/break_infinity', 'lib/phaser', 'in
                 }
                 return fireRate;
             }, this);
-            var defaultRange = 150;
+            var defaultRange = 100000;
             if ('startingRange' in incTower.towerAttributes[this.towerType]) {
                 defaultRange = incTower.towerAttributes[this.towerType].startingRange;
             }
